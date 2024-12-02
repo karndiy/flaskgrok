@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Caller</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>AI GROK x.ai</h1>
+        <textarea id="userMessage" placeholder="Enter your message here..."></textarea>
+        <button id="callApiBtn">Call API</button>
+        <div id="responseArea"></div>
+    </div>
+
+    <script>
+        document.getElementById('callApiBtn').addEventListener('click', async () => {
+            const userMessage = document.getElementById('userMessage').value;
+            const responseArea = document.getElementById('responseArea');
+
+            try {
+                const response = await fetch('/call-api', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ user_message: userMessage })
+                });
+                
+                const data = await response.json();
+                if (response.ok) {
+                    // Displaying the response message content
+                    responseArea.innerHTML = `<pre>${data.choices[0].message.content}</pre>`;
+                } else {
+                    responseArea.innerHTML = `<pre>Error: ${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            } catch (error) {
+                responseArea.innerHTML = `<pre>Error: ${error.message}</pre>`;
+            }
+        });
+    </script>
+</body>
+</html>
