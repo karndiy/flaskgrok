@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify, render_template
 import requests
+import os
+from dotenv import load_dotenv
+API_KEY = os.getenv("API_KEY")
 
 app = Flask(__name__)
 
 API_URL = "https://api.x.ai/v1/chat/completions"
-API_KEY = "xai-RGRKtiOdWZPD1TL7Bv3FTofKZRSeagJ7S6ApIywoLtPSeqvfdZGtrMxlf5d4lCl3L1Jn4HEjamN473Pu"
+#API_KEY = "xai-RGRKtiOdWZPD1TL7Bv3FTofKZRSeagJ7S6ApIywoLtPSeqvfdZGtrMxlf5d4lCl3L1Jn4HEjamN473Pu"
 
 @app.route('/')
 def index():
@@ -17,7 +20,7 @@ def call_api():
     # Prepare payload and headers for API request
     payload = {
         "messages": [
-            {"role": "system", "content": "You are a test assistant."},
+            {"role": "system", "content": "You are a assistant."},
             {"role": "user", "content": user_message}
         ],
         "model": "grok-beta",

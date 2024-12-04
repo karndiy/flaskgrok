@@ -9,12 +9,21 @@
 <body>
     <div class="container">
         <h1>AI GROK x.ai</h1>
+        <div id="responseArea"></div>
+        <hr>
         <textarea id="userMessage" placeholder="Enter your message here..."></textarea>
         <button id="callApiBtn">Call API</button>
-        <div id="responseArea"></div>
+        
     </div>
 
     <script>
+        function highlightCode(code) {
+            return code
+                .replace(/(def|print|if|else|elif|return|import|from|as|for|while|break|continue|class|try|except)/g, '<span class="keyword">$1</span>') // Keywords
+                .replace(/(".*?"|'.*?')/g, '<span class="string">$1</span>') // Strings
+                .replace(/(\b\d+\b)/g, '<span class="number">$1</span>') // Numbers
+                .replace(/(#.*?$)/gm, '<span class="comment">$1</span>'); // Comments
+        }
         document.getElementById('callApiBtn').addEventListener('click', async () => {
             const userMessage = document.getElementById('userMessage').value;
             const responseArea = document.getElementById('responseArea');
@@ -31,6 +40,7 @@
                 const data = await response.json();
                 if (response.ok) {
                     // Displaying the response message content
+                    //responseArea.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
                     responseArea.innerHTML = `<pre>${data.choices[0].message.content}</pre>`;
                 } else {
                     responseArea.innerHTML = `<pre>Error: ${JSON.stringify(data, null, 2)}</pre>`;
